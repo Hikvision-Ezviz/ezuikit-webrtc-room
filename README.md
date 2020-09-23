@@ -84,7 +84,7 @@ myEZUIKit.setPeerAudioEnable(clientId,true) // 打开其他成员音频
 myEZUIKit.setPeerAudioEnable(clientId,false) // 关闭其他成员音频
  ```
 
-### 开关其他成员的的视频频： setPeerVideoEnable
+### 开关其他成员的视频： setPeerVideoEnable
 
 #### 简要描述
 

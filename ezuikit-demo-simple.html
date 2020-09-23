@@ -31,7 +31,7 @@
 		<div>
 			<button id="setSelfVideoEnable">打开本地视频</button>
 			<button id="setSelfVideoUnable">关闭本地视频</button>
-			<input id="peerId" placeholder="请输入其他成员clientId" />
+			<input id="peerId2" placeholder="请输入其他成员clientId" />
 			<button id="setPeerVideoEnable">打开其他成员视频</button>
 			<button id="setPeerVideoUnable">关闭其他成员视频</button>
 		</div>
@@ -137,11 +137,11 @@
 			myEZUIKit.setSelfVideoEnable(false)
 		};
 		document.getElementById("setPeerVideoEnable").onclick = function () {
-			var peerId = $("#peerId").val();
+			var peerId = $("#peerId2").val();
 			myEZUIKit.setPeerVideoEnable(peerId,true)
 		};
 		document.getElementById("setPeerVideoUnable").onclick = function () {
-			var peerId =  $("#peerId").val();
+			var peerId =  $("#peerId2").val();
 			myEZUIKit.setPeerVideoEnable(peerId,false)
 		};
 
