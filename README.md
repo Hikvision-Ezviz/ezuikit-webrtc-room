@@ -32,86 +32,86 @@ var myEZUIKit = new EZUIKitWebrtcRoom(opt);
 
 ### API
 
-开关自己的音频： setSelfAudioEnable
+### 开关自己的音频： setSelfAudioEnable
 
-简要描述
+#### 简要描述
 
 设置本地麦克风状态
 
-参数
+#### 参数
 
 期望设置的麦克风状态（Boolean）
 
-请求示例
+#### 请求示例
 
 ```
 myEZUIKit.setAudioEnable(true) // 打开自己音频
 myEZUIKit.setAudioEnable(false) // 关闭自己音频
 ```
 
-开关自己的视频： setSelfVideoEnable
+### 开关自己的视频： setSelfVideoEnable
 
-简要描述
+#### 简要描述
 
 设置本地摄像头状态
 
-参数
+#### 参数
 
 期望设置的摄像头状态（Boolean）
 
-请求示例
+#### 请求示例
 ```
 myEZUIKit.setSelfVideoEnable(true) // 打开自己视频
 myEZUIKit.setSelfVideoEnable(false) // 关闭自己的视频
  ```
 
 
-开关其他成员的的音频： setPeerAudioEnable
+### 开关其他成员的的音频： setPeerAudioEnable
 
-简要描述
+#### 简要描述
 
 设置其他成员音频状态
 
-参数
+#### 参数
 
 其他成员唯一ID
 
 期望设置的音频状态（Boolean）
 
-请求示例
+#### 请求示例
 ```
 myEZUIKit.setPeerAudioEnable(clientId,true) // 打开其他成员音频
 myEZUIKit.setPeerAudioEnable(clientId,false) // 关闭其他成员音频
  ```
 
- 开关其他成员的的视频频： setPeerVideoEnable
+### 开关其他成员的的视频频： setPeerVideoEnable
 
-简要描述
+#### 简要描述
 
 设置其他成员视频状态
 
-参数
+#### 参数
 
 其他成员唯一ID
 
 期望设置的视频状态（Boolean）
 
-请求示例
+#### 请求示例
 ```
 myEZUIKit.setPeerVideoEnable(clientId,true) // 打开其他成员视频
 myEZUIKit.setPeerVideoEnable(clientId,false) // 关闭其他成员视频
  ```
- 全屏： fullScreen
+### 全屏： fullScreen
 
-简要描述
+#### 简要描述
 
 设置主视频全屏
 
-参数
+#### 参数
 
 无
 
-请求示例
+#### 请求示例
 ```
 myEZUIKit.fullScreen()
 ```
@@ -119,13 +119,13 @@ myEZUIKit.fullScreen()
 
 简要描述
 
-退出全屏
+### 退出全屏 exitFullScreen
 
-参数
+#### 参数
 
 无
 
-请求示例
+####  请求示例
 ```
 myEZUIKit.exitFullScreen()
  ```
