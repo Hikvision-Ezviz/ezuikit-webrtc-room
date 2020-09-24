@@ -94,32 +94,143 @@
     http_request.send(data);
   }
   addCss('https://open.ys7.com/assets/ezuikit_v2.6.4/webrtc/ezuikit-webrtc-room.css', function () { })
-  // 检测用户摄像头
-  const constraints = {
-    audio: true,
-    video: true,
-  };
-  var handleSuccess = function (stream) {
-    const audioTracks = stream.getAudioTracks();
-    const videoTracks = stream.getVideoTracks();
-    if (audioTracks.length > 0) {
-      window['localAudioAvailable'] = audioTracks[0].enabled;
-    } else {
-      console.log("用户开启了麦克风，但未获取到本地音频");
-    }
-    if (videoTracks.length > 0) {
-      window['localVideoAvailable'] = videoTracks[0].enabled;
-    } else {
-      console.log("用户开启了摄像头，但未获取到本地音频");
-    }
 
-  }
-  var handleError = function (err) {
-    console.log("err", err);
-    window['localAudioAvailable'] = false;
-    window['localVideoAvailable'] = false;
-  }
-  navigator.mediaDevices.getUserMedia(constraints).then(handleSuccess).catch(handleError);
+  if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+    // Firefox 38+ seems having support of enumerateDevicesx
+    navigator.enumerateDevices = function(callback) {
+        navigator.mediaDevices.enumerateDevices().then(callback);
+    };
+}
+
+var MediaDevices = [];
+var isHTTPs = location.protocol === 'https:';
+var canEnumerate = false;
+
+if (typeof MediaStreamTrack !== 'undefined' && 'getSources' in MediaStreamTrack) {
+    canEnumerate = true;
+} else if (navigator.mediaDevices && !!navigator.mediaDevices.enumerateDevices) {
+    canEnumerate = true;
+}
+
+var hasMicrophone = false;
+var hasSpeakers = false;
+var hasWebcam = false;
+
+var isMicrophoneAlreadyCaptured = false;
+var isWebcamAlreadyCaptured = false;
+
+function checkDeviceSupport(callback) {
+    if (!canEnumerate) {
+        return;
+    }
+    if (!navigator.enumerateDevices && window.MediaStreamTrack && window.MediaStreamTrack.getSources) {
+        navigator.enumerateDevices = window.MediaStreamTrack.getSources.bind(window.MediaStreamTrack);
+    }
+    if (!navigator.enumerateDevices && navigator.enumerateDevices) {
+        navigator.enumerateDevices = navigator.enumerateDevices.bind(navigator);
+    }
+    if (!navigator.enumerateDevices) {
+        if (callback) {
+            callback();
+        }
+        return;
+    }
+    MediaDevices = [];
+    navigator.enumerateDevices(function(devices) {
+        devices.forEach(function(_device) {
+            var device = {};
+            for (var d in _device) {
+                device[d] = _device[d];
+            }
+            if (device.kind === 'audio') {
+                device.kind = 'audioinput';
+            }
+            if (device.kind === 'video') {
+                device.kind = 'videoinput';
+            }
+            var skip;
+            MediaDevices.forEach(function(d) {
+                if (d.id === device.id && d.kind === device.kind) {
+                    skip = true;
+                }
+            });
+            if (skip) {
+                return;
+            }
+            if (!device.deviceId) {
+                device.deviceId = device.id;
+            }
+            if (!device.id) {
+                device.id = device.deviceId;
+            }
+            if (!device.label) {
+                device.label = 'Please invoke getUserMedia once.';
+                if (!isHTTPs) {
+                    device.label = 'HTTPs is required to get label of this ' + device.kind + ' device.';
+                }
+            } else {
+                if (device.kind === 'videoinput' && !isWebcamAlreadyCaptured) {
+                    isWebcamAlreadyCaptured = true;
+                }
+
+                if (device.kind === 'audioinput' && !isMicrophoneAlreadyCaptured) {
+                    isMicrophoneAlreadyCaptured = true;
+                }
+            }
+
+            if (device.kind === 'audioinput') {
+                hasMicrophone = true;
+            }
+            if (device.kind === 'audiooutput') {
+                hasSpeakers = true;
+            }
+            if (device.kind === 'videoinput') {
+                hasWebcam = true;
+            }
+            // there is no 'videoouput' in the spec.
+            MediaDevices.push(device);
+        });
+
+        if (callback) {
+            callback();
+        }
+    });
+}
+
+// check for microphone/camera support!
+checkDeviceSupport(function() {
+  window['localAudioAvailable'] = hasMicrophone;
+  window['localVideoAvailable'] = hasWebcam;
+});
+
+  // // 检测用户摄像头
+  // const constraints = {
+  //   audio: true,
+  //   video: true,
+  // };
+  // var handleSuccess = function (stream) {
+  //   const audioTracks = stream.getAudioTracks();
+  //   const videoTracks = stream.getVideoTracks();
+  //   debugger
+  //   if (audioTracks.length > 0) {
+  //     window['localAudioAvailable'] = audioTracks[0].enabled;
+  //   } else {
+  //     console.log("用户开启了麦克风，但未获取到本地音频");
+  //   }
+  //   if (videoTracks.length > 0) {
+  //     window['localVideoAvailable'] = videoTracks[0].enabled;
+  //   } else {
+  //     console.log("用户开启了摄像头，但未获取到本地音频");
+  //   }
+
+  // }
+  // var handleError = function (err) {
+  //   debugger
+  //   console.log("err", err);
+  //   window['localAudioAvailable'] = false;
+  //   window['localVideoAvailable'] = false;
+  // }
+  // navigator.mediaDevices.getUserMedia(constraints).then(handleSuccess).catch(handleError);
 
   var stsService = "sts://vtmhz.ys7.com:8554/rtc";
   var wsService = "wss://webrtc.ys7.com/rtcgw-ws";
@@ -700,7 +811,6 @@
                 }
 
               }else {
-                debugger
                 if (typeof params.onError === 'function') {
                   params.onError(PrefixCode(data.code,data.msg))
                 }
