@@ -1009,7 +1009,8 @@ checkDeviceSupport(function() {
                 audioControl.setAttribute("class", classValue);
 
                 controlsContainer.appendChild(audioControl);
-                var video = document.createElement('video');
+                var video = $('<video autoplay playsinline></video>');
+                video = video.get(0);
                 video.setAttribute("id", "ezuikit-webrtc-video-item-" + client_id);
                 videoContainer2.append(video);
                 videoContainer2.appendChild(controlsContainer);
@@ -1043,7 +1044,8 @@ checkDeviceSupport(function() {
               if ($('#' + videoId).length === 0) {
                 // 本地视频实例
                 // video-item1 end
-                var video = document.createElement('video'); //'<video id="ezuikit-webrtc-loacal-video-item" width=460 height=480 autoplay playsinline muted="muted"></video>';
+                var video = $('<video autoplay playsinline></video>');
+                video = video.get(0);
                 video.setAttribute("id", videoId);
                 video.setAttribute("width", 120);
                 video.setAttribute("autoplay", true);
