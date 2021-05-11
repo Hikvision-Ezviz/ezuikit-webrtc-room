@@ -6,23 +6,27 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>ezviz音视频</title>
-	<script type="text/javascript" src="./ezuikit-webrtc-room.js?t=1"></script>
+	<script type="text/javascript" src="./ezuikit-webrtc-room.js?t=2"></script>
+	<script>
+		function getQueryStringWithUrl(name, url) { var r = new RegExp("(\\?|#|&)" + name + "=(.*?)(#|&|$)"); var m = (url || location.href).match(r); return decodeURIComponent(m ? m[2] : ''); }
+	</script>
 </head>
 
 <body>
-	<div><span>用户名</span><input type="text" id="userName" value="yourname"></div>
-	<div><span>房间号：</span><input type="text" id="room" value="0"></div>
-	<div><span>设备序列号：</span><input type="text" id="deviceSerial" value="D88600067"></div>
+	<div><span>用户名：</span><input type="text" id="userName" value="yourname"></div>
+	<div><span>房间号：</span><input type="text" id="room" value=""></div>
+	<div><span>房间号密码：</span><input type="text" id="password" value="123456"></div>
+	<div><span>设备序列号：</span><input type="text" id="deviceSerial" value="C69594192"></div>
 	<div><span>通道号：</span><input type="text" id="channel" value="1"></div>
 	<div><span>accessToken：</span><input type="text" id="accessToken"
-			value="at.aeem27robxy737vk8my26wn2c7ty6olm-2rthu0q1mz-1nwo7vu-94pba8dy2"></div>
+			value="at.75u9np7p2k0447jicewnozph1ukbnj9z-73sfj700ik-1jas3pz-xqfw9hd7s"></div>
 	<div>
 		<button id="startCreate">创建房间</button>
 		<button id="startJoin">加入房间</button>
 		<button id="fullScreen">全屏</button>
 		<button id="stop">结束</button>
 		<div>
-			<button id="setSelfAudioEnable">打开本地音频</button>
+			<button id="setSelfAudioEnable">打开本地音频1</button>
 			<button id="setSelfAudioUnable">关闭本地音频</button>
 			<input id="peerId" placeholder="请输入其他成员clientId" />
 			<button id="setPeerAudioEnable">打开其他成员音频</button>
@@ -42,22 +46,24 @@
 
 		document.getElementById("startCreate").onclick =  function () {
 			var room = $("#room").val();
-			var deviceSerial = $("#deviceSerial").val();
+			var deviceSerial = getQueryStringWithUrl('deviceSerial',window.location.href) || $("#deviceSerial").val();
+			var accessToken = getQueryStringWithUrl('accessToken',window.location.href) || $("#accessToken").val();
 			var channel = $("#channel").val();
 			var userName = $("#userName").val();
-			var accessToken = $("#accessToken").val();
+			var password = $("#password").val();
 
 			var opt = {
 				id: "ezuikit-webrtc-container",
 				room: '0',
 				videoWidth: 600,
 				videoHeight: 400,
-				useMic: false,
+				useMic: true,
 				useCam: true,
 				deviceSerial: deviceSerial,
 				channel: channel,
 				accessToken: accessToken,
 				userName: userName,
+				password: password,
 				type: 'create',
 				previewStyle: {
 				},
@@ -69,6 +75,7 @@
 				},
 				onError: function(error){
 					console.log("onerror",error);
+					layer.msg(error.data)
 				}
 				// onRoomCreated:function(data){
 				// 	console.log("room created callback",data);
@@ -84,10 +91,11 @@
 		}
 		document.getElementById("startJoin").onclick = function () {
 			var room = $("#room").val();
-			var deviceSerial = $("#deviceSerial").val();
 			var channel = $("#channel").val();
 			var userName = $("#userName").val();
-			var accessToken = $("#accessToken").val();
+			var deviceSerial = getQueryStringWithUrl('deviceSerial',window.location.href) || $("#deviceSerial").val();
+			var accessToken = getQueryStringWithUrl('accessToken',window.location.href) || $("#accessToken").val();
+			var password = $("#password").val();
 			var opt = {
 				id: "ezuikit-webrtc-container",
 				videoWidth: 600,
@@ -99,13 +107,13 @@
 				channel: channel,
 				accessToken: accessToken,
 				userName: userName,
+				password: password,
 				type: 'join',
 				// onlyDevice: true,
 				onMessage: function(message){
 					console.log("onmessage",message);
 				},
 				onError: function(error){
-					debugger
 					console.log("onerror",error);
 				}
 			}
