@@ -1,3 +1,4 @@
+/* eslint-disable */
 "use strict";
 
 /**
@@ -212,12 +213,13 @@
     var wsService = "wss://test12.ys7.com/rtcgw-ws";
     var apiDomain = "https://test12open.ys7.com";
   }
+   var EZUIKitWebrtcRoom;
 
   addJs('https://open.ys7.com/assets/ezuikit_v2.6.4/npm/js/adapeter.js', function () {
     addJs('https://open.ys7.com/assets/ezuikit_v2.6.4/js/jquery.min.js', function () {
       addJs('https://open.ys7.com/assets/ezuikit_v2.6.4/webrtc/janus.js', function () {
         addJs('https://open.ys7.com/assets/layer/layer.js', function () {
-          var EZUIKitWebrtcRoom = function EZUIKitWebrtcRoom(params) {
+          EZUIKitWebrtcRoom = function EZUIKitWebrtcRoom(params) {
             var _this = this;
             window['ezuikit-webrtc-' + params.id] = {
               opt: {
@@ -1412,5 +1414,12 @@
         })
       })
     })
-  })
-});
+  });
+  window.EZUIKitWebrtcRoom = EZUIKitWebrtcRoom;
+
+  if (!noGlobal) {
+    window.EZUIKitWebrtcRoom = EZUIKitWebrtcRoom;
+  }
+
+  return EZUIKitWebrtcRoom;
+}); 
