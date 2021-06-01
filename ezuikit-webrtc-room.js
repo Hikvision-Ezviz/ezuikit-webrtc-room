@@ -552,6 +552,7 @@
                                               };
                                               renderPreviewVideoItem(data, window['ezuikit-webrtc-' + params.id].opt.sts, window['ezuikit-webrtc-' + params.id].opt.cln.local.stream);
                                               var currentVideo = document.getElementById("ezuikit-webrtc-video-item-" + data.client_id)
+                                              currentVideo.play();
                                               switchFocusVideo(currentVideo);
                                             },
                                             error: function (error) {
@@ -1289,6 +1290,7 @@
                 console.log(e)
               }
               var currentVideo = document.getElementById("ezuikit-webrtc-video-item-" + client_id);
+              currentVideo.play();
               if (getQueryStringWithUrl('dev', window['ezuikit-webrtc-' + params.id].opt.stsUrl) === username) {
                 switchFocusVideo(currentVideo);
               }
