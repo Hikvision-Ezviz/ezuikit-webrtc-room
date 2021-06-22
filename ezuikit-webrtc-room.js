@@ -378,7 +378,7 @@
                   authtype: 5
                 }
               }else { //无设备
-                window['ezuikit-webrtc-' + params.id].opt.stsUrl += "&callType=3&othertype=115&clienttype=105&devstreamtype=1&streamtype=2&video=1&authtype=5&password=" + window['ezuikit-webrtc-' + params.id].opt.roomParams.password;
+                window['ezuikit-webrtc-' + params.id].opt.stsUrl += "&callType=3&othertype=115&clienttype=105&devstreamtype=1&streamtype=2&video=1&authtype=22&password=" + window['ezuikit-webrtc-' + params.id].opt.roomParams.password;
                 JanusParams = {
                   token: window['ezuikit-webrtc-' + params.id].opt.stream,
                   room: window['ezuikit-webrtc-' + params.id].opt.roomParams.room,
@@ -625,6 +625,7 @@
                                               // document.getElementById("roomInfoId").innerHTML = document.getElementById("roomInfoId").innerHTML + room;
                                             }
                                             if (typeof params.onMessage === 'function') {
+                                              msg["serverUrl"] = wsService;
                                               params.onMessage(PrefixCode(msg["code"], msg));
                                             }
                                           }

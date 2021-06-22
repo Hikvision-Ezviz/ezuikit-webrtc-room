@@ -14,22 +14,18 @@
 
 <body>
 	<div id="ezuikit-webrtc-container"></div>
-	<h2>创建房间示例：</h2>
+	<h2>加入房间示例：</h2>
 	<div><span>用户名：</span><input type="text" id="userName" value="yourname"></div>
 	<div><span>房间号：</span><input type="text" id="room" value=""></div>
 	<div><span>房间号密码：</span><input type="text" id="password" value="123456"></div>
-	<div><span>设备序列号：</span><input type="text" id="deviceSerial" value="C69594192"></div>
-	<div><span>通道号：</span><input type="text" id="channel" value="1"></div>
 	<div><span>accessToken：</span><input type="text" id="accessToken"
 			value="at.cnavogr85d6hkmu81gh0fpvi9b9b7rwq-45gad0262n-0tewrau-5ovkyocot"></div>
 	<div>
-		<h3>1-1. 创建房间(包含设备)</h3>
-		<button id="startCreate">创建房间(包含设备)</button>
-		<h3>1-2. 创建房间(无设备)</h3>
-		<button id="startCreateWithOutDevice">创建房间(无设备)</button>
-		<h3>2. 退出</h3>
+		<h3>加入房间</h3>
+		<button id="startJoin">加入房间</button>
+		<h3>退出</h3>
 		<button id="stop">退出</button>
-		<h3>3. 操作</h3>
+		<h3>操作</h3>
 		<div>
 			<button id="setSelfAudioEnable">打开本地音频1</button>
 			<button id="setSelfAudioUnable">关闭本地音频</button>
@@ -45,97 +41,33 @@
 			<button id="setPeerVideoEnable">打开其他成员视频</button>
 			<button id="setPeerVideoUnable">关闭其他成员视频</button>
 		</div>
-		<h3>4. 加入房间</h3>
-		<div>新开客户端（窗口）体验加入房间</div>
-		<a href="./ezuikit-demo-simple-join.html" target="_blank">加入房间</a>
 	</div>
 	<script>
 		var myEZUIKit;
 
-		document.getElementById("startCreate").onclick =  function () {
+		document.getElementById("startJoin").onclick = function () {
 			var room = $("#room").val();
-			var deviceSerial = getQueryStringWithUrl('deviceSerial',window.location.href) || $("#deviceSerial").val();
-			var accessToken = getQueryStringWithUrl('accessToken',window.location.href) || $("#accessToken").val();
-			var channel = $("#channel").val();
 			var userName = $("#userName").val();
+			var accessToken = getQueryStringWithUrl('accessToken',window.location.href) || $("#accessToken").val();
 			var password = $("#password").val();
-
 			var opt = {
 				id: "ezuikit-webrtc-container",
-				room: '0',
 				videoWidth: 600,
 				videoHeight: 400,
-				useMic: true,
-				useCam: true,
-				deviceSerial: deviceSerial,
-				channel: channel,
-				accessToken: accessToken,
-				userName: userName,
-				password: password,
-				type: 'create',
-				previewStyle: {
-				},
-				headerStyle: {
-				},
-				// showHeader: false,
-				onMessage: function(message){
-					console.log("onmessage",message);
-				},
-				onError: function(error){
-					console.log("onerror",error);
-					layer.msg(error.data)
-				}
-				// onRoomCreated:function(data){
-				// 	console.log("room created callback",data);
-				// },
-				// onPeerPublisher: function(data){
-				// 	console.log("peer publisher callback",data);
-				// },
-				// onPeerExit: function(data){
-				// 	console.log("peer exit callback",data);
-				// }
-			}
-			myEZUIKit = new EZUIKitWebrtcRoom(opt);
-		}
-		// 无设备
-		document.getElementById("startCreateWithOutDevice").onclick =  function () {
-			var room = $("#room").val();
-			var accessToken = getQueryStringWithUrl('accessToken',window.location.href) || $("#accessToken").val();
-			var userName = $("#userName").val();
-			var password = $("#password").val();
-
-			var opt = {
-				id: "ezuikit-webrtc-container",
-				room: '0',
-				videoWidth: 600,
-				videoHeight: 400,
+				room: room,
 				useMic: true,
 				useCam: true,
 				accessToken: accessToken,
 				userName: userName,
 				password: password,
-				type: 'create',
-				previewStyle: {
-				},
-				headerStyle: {
-				},
-				// showHeader: false,
+				type: 'join',
+				// onlyDevice: true,
 				onMessage: function(message){
 					console.log("onmessage",message);
 				},
 				onError: function(error){
 					console.log("onerror",error);
-					layer.msg(error.data)
 				}
-				// onRoomCreated:function(data){
-				// 	console.log("room created callback",data);
-				// },
-				// onPeerPublisher: function(data){
-				// 	console.log("peer publisher callback",data);
-				// },
-				// onPeerExit: function(data){
-				// 	console.log("peer exit callback",data);
-				// }
 			}
 			myEZUIKit = new EZUIKitWebrtcRoom(opt);
 		}
